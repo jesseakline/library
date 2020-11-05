@@ -1,1 +1,1 @@
-# library
+# A library that allows user to add books to a library database and see those books displayed. 
