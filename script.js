@@ -1,11 +1,12 @@
 const library = [];
+let idCounter = library.length;
 const bookStorage = document.getElementById('bookStorage');
 const form = document.getElementById('form');
 form.style.visibility = 'hidden';
 
 class Book {
     constructor(number, title, author, pages, status) {
-        this.number = number;
+        this.id = id;
         this.title = title;
         this.author = author;
         this.pages = pages;
@@ -17,10 +18,11 @@ class Book {
 }
 
 function addBook(titleInput, authorInput, pagesInput) {
-    number = library.length;
+    this.id = idCounter;
+    idCounter++;
+    const newBook = new Book(id, titleInput, authorInput, pagesInput, false);
+    library.push(newBook);
     
-    const book1 = new Book(number, titleInput, authorInput, pagesInput, false);
-    library.push(book1);
     let bookDiv = document.createElement('div');
     let infoDiv = document.createElement('div');
     let bookCheck = document.createElement('button');
@@ -29,7 +31,7 @@ function addBook(titleInput, authorInput, pagesInput) {
     bookDiv.appendChild(infoDiv);
     bookDiv.appendChild(bookCheck)
     bookDiv.appendChild(removeBtn);
-    infoDiv.innerHTML = book1.info();
+    infoDiv.innerHTML = newBook.info();
     bookCheck.innerHTML = 'Reading';
     removeBtn.innerHTML = 'Remove';
     bookDiv.className = 'bookStyle';
@@ -38,19 +40,19 @@ function addBook(titleInput, authorInput, pagesInput) {
     removeBtn.className = 'removeBtn';
     
     bookCheck.onclick = function() {
-        if (book1.status == false) {
-            book1.status = true;
+        if (newBook.status == false) {
+            newBook.status = true;
             bookCheck.innerHTML = 'Completed';
         } else {
-            book1.status = false;
+            newBook.status = false;
             bookCheck.innerHTML = 'Reading';
         }
-        //console.log(book1.status);
+        //console.log(newBook.status);
     }
     
     removeBtn.onclick = function() {
         bookDiv.remove();
-        library.splice(book1.number, 1);
+        library.splice(newBook.id, 1);
     };
 
     console.log(library);
@@ -68,8 +70,12 @@ document.getElementById('submit').onclick = function () {
     let titleInput = document.getElementById('title').value;
     let authorInput = document.getElementById('author').value;
     let pagesInput = document.getElementById('pages').value;
-    addBook(titleInput, authorInput, pagesInput);
-    document.getElementById('title').value = '';
-    document.getElementById('author').value = '';
-    document.getElementById('pages').value = '';
+    if(titleInput === '' | authorInput === '' | pagesInput === '') {
+        alert('Please enter title, author, and number of pages');
+    } else {
+        addBook(titleInput, authorInput, pagesInput);
+        document.getElementById('title').value = '';
+        document.getElementById('author').value = '';
+        document.getElementById('pages').value = '';
+    }
 }
